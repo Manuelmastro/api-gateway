@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package order;
+
+option go_package = "./pkg/order/pb";
+
+// Order Service Definition
+service OrderService {
+    rpc MakeOrder(MakeOrderRequest) returns (MakeOrderResponse) {}
+    rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse) {}
+}
+
+// Messages for MakeOrder
+message MakeOrderRequest {
+    string userId = 1;            // ID of the user placing the order
+    string address = 2;           // Delivery address
+}
+
+message MakeOrderResponse {
+    bool status = 1;              // Status of the order creation
+    string message = 2;           // Success or error message
+    string orderId = 3;           // ID of the created order
+}
+
+// Messages for ListOrders
+message ListOrdersRequest {
+    string userId = 1;            // ID of the user whose orders are to be listed
+}
+
+message ListOrdersResponse {
+    repeated Order orders = 1;    // List of orders
+}
+
+// Order structure
+message Order {
+    string orderId = 1;           // Unique ID for the order
+    string userId = 2;            // ID of the user who placed the order
+    repeated Product products = 3; // List of products in the order
+    string address = 4;           // Delivery address
+    float totalAmount = 5;        // Total cost of the order
+    string orderStatus = 6;       // Status of the order (e.g., "Pending", "Completed")
+}
+
+// Product structure
+message Product {
+    string productId = 1;         // Unique ID for the product
+    string productName = 2;       // Name of the product
+    float price = 3;              // Price of the product
+    int32 quantity = 4;           // Quantity of the product
+}
